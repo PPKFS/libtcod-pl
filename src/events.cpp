@@ -1,3 +1,5 @@
+#define PROLOG_MODULE "events"
+
 #include <SWI-cpp.h>
 #include <SWI-Prolog.h>
 #include "libtcod.hpp"
@@ -5,7 +7,7 @@
 #include <string>
 #include <memory>
 
-PREDICATE(check_for_keypress, 1)
+PREDICATE(tcod_check_for_keypress, 1)
 {
 	TCOD_key_t key;
 	TCODSystem::checkForEvent(TCOD_EVENT_KEY, &key, NULL);
@@ -15,7 +17,7 @@ PREDICATE(check_for_keypress, 1)
 	return A1 = comp;
 }
 
-PREDICATE(wait_for_keypress, 1)
+PREDICATE(tcod_wait_for_keypress, 1)
 {
 	TCOD_key_t key;
 	TCODSystem::waitForEvent(TCOD_EVENT_KEY, &key, NULL, true);
