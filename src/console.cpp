@@ -8,6 +8,12 @@
 
 std::map<std::string, std::shared_ptr<TCODConsole>> consoles;
 
+PREDICATE(tcod_set_font, 2)
+{
+	TCODConsole::setCustomFont((char*)A1, (int)A2);
+	return TRUE;
+}
+
 PREDICATE(tcod_create_console, 3)
 {
 	if(consoles.find((char*)A1) == consoles.end())
