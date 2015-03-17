@@ -1,3 +1,10 @@
+#include <SWI-cpp.h>
+#include <SWI-Prolog.h>
+#include "libtcod.hpp"
+#include <map>
+#include <string>
+#include <memory>
+
 PREDICATE(check_for_keypress, 1)
 {
 	TCOD_key_t key;

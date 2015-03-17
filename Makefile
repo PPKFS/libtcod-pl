@@ -1,6 +1,6 @@
 
 tcod:
-	swipl-ld -Ilib/include -L. -ltcod -ltcodxx -shared -o lib/tcod-pl.so src/main.cpp
+	swipl-ld -Ilib/include -L. -ltcod -ltcodxx -shared -cc-options,-std=c++11 -o lib/tcod-pl.so src/events.cpp src/console.cpp
 
 clean:
 	rm -rf lib/tcod-pl.so
