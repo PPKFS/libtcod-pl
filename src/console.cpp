@@ -58,20 +58,63 @@ PREDICATE(tcod_init_root, 4)
 
 PREDICATE(tcod_console_putChar, 4)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1);
-	if(it == consoles.end())
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
 		return FALSE;
-
 	it->second->putChar((int)A2, (int)A3, ((char*)A4)[0]);
 	return TRUE;
 }
 
 PREDICATE(tcod_console_clear, 1)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1);
-	if(it == consoles.end())
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
 		return FALSE;
-
 	it->second->flush();
+	return TRUE;
+}
+
+PREDICATE(tcod_set_default_bg, 2)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->setDefaultBackground(termToColor(A2));
+	return TRUE;
+}
+
+PREDICATE(tcod_set_default_fg, 2)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->setDefaultForeground(termToColor(A2));
+	return TRUE;
+}
+
+PREDICATE(tcod_set_char_fg, 4)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->setCharForeground((int)A2, (int)A3, termToColor(A4));
+	return TRUE;
+}
+
+PREDICATE(tcod_set_char_bg, 4)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->setCharBackground((int)A2, (int)A3, termToColor(A4));
+	return TRUE;
+}
+
+PREDICATE(tcod_set_ascii, 4)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->setCharForeground((int)A2, (int)A3, (int)A4);
 	return TRUE;
 }
