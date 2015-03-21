@@ -1,5 +1,6 @@
 :- use_module(console).
 :- use_module(color).
+:- use_module(events).
 
 input:-
 	check_for_keypress(X),

@@ -8,7 +8,16 @@
 		putchar/4,
 		putchar/3,
 		clear/1,
-		clear/0]).
+		clear/0,
+		set_default_background/2,
+		set_default_background/1,
+		set_default_foreground/2,
+		set_default_foreground/1,
+		setchar/4,
+		setchar/3
+		]).
+
+:- use_module(color).
 
 create_console(Name, W, H) :-
 	Name \= root,
@@ -42,3 +51,22 @@ clear(Name) :-
 clear :-
 	clear(root).
 
+set_default_background(Name, Color) :-
+	color(Color, Color2),
+	tcod_set_default_bg(Name, Color2).
+
+set_default_background(Color) :-
+	set_default_background(root, Color).
+
+set_default_foreground(Name, Color) :-
+	color(Color, Color2),
+	tcod_set_default_bg(Name, Color2).
+
+set_default_foreground(Color) :-
+	set_default_foreground(root, Color).
+
+setchar(Console, X, Y, Char):-
+	tcod_set_ascii(Console, X, Y, Char).
+
+setchar(X, Y, Char) :-
+	setchar(root, X, Y, Char).

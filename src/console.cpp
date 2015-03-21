@@ -8,6 +8,11 @@
 
 std::map<std::string, std::shared_ptr<TCODConsole>> consoles;
 
+TCODColor termToColor(PlTerm term)
+{
+	return TCODColor((int)term[1], (int)term[2], (int)term[3]);
+}
+
 PREDICATE(tcod_set_font, 2)
 {
 	TCODConsole::setCustomFont((char*)A1, (int)A2);
@@ -115,6 +120,6 @@ PREDICATE(tcod_set_ascii, 4)
 	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
-	it->second->setCharForeground((int)A2, (int)A3, (int)A4);
+	it->second->setChar((int)A2, (int)A3, (int)A4);
 	return TRUE;
 }
