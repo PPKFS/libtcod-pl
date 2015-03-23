@@ -66,7 +66,7 @@ PREDICATE(tcod_console_putChar, 4)
 	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
-	it->second->putChar((int)A2, (int)A3, ((char*)A4)[0]);
+	it->second->putChar((int)A2, (int)A3, (int)A4);
 	return TRUE;
 }
 
@@ -75,7 +75,7 @@ PREDICATE(tcod_console_clear, 1)
 	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
-	it->second->flush();
+	it->second->clear();
 	return TRUE;
 }
 
@@ -121,5 +121,28 @@ PREDICATE(tcod_set_ascii, 4)
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->setChar((int)A2, (int)A3, (int)A4);
+	return TRUE;
+}
+
+PREDICATE(tcod_is_window_closed, 1)
+{
+	return (A1 = (TCODConsole::isWindowClosed() ? PlTerm("yes") : PlTerm("no")));
+}
+
+PREDICATE(tcod_print, 4)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->print((int)A2, (int)A3, (char*)A4);
+	return TRUE;
+}
+
+PREDICATE(tcod_print_rect, 6)
+{
+	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	if(it == consoles.end()) 
+		return FALSE;
+	it->second->printRect((int)A2, (int)A3, (int)A4, (int)A5, (char*)A6);
 	return TRUE;
 }

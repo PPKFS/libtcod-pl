@@ -3,7 +3,8 @@
 		add_colors/3,
 		subtract_colors/3,
 		lerp/4,
-		set_hsv/4
+		set_hsv/4,
+		color/2
 		]).
 
 :-use_foreign_library('lib/tcod-pl').
@@ -201,7 +202,8 @@ peach(255,159,127).
 
 color(Name, Color) :-
 	atom(Name),
-	functor(Color, Name, 3).
+	call(Name, R, G, B),
+	Color = color(R, G, B).
 
 color(Color, Color) :-
 	functor(Color, Name, 3),
