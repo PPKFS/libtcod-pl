@@ -6,12 +6,15 @@
 #include <string>
 #include <memory>
 
-std::map<std::string, std::shared_ptr<TCODConsole>> consoles;
+typedef std::map<std::string, ConsolePtr> ConsoleMap;
+ConsoleMap consoles;
 
 TCODColor termToColor(PlTerm term)
 {
 	return TCODColor((int)term[1], (int)term[2], (int)term[3]);
 }
+
+std::map<
 
 PREDICATE(tcod_set_font, 2)
 {
@@ -23,7 +26,7 @@ PREDICATE(tcod_create_console, 3)
 {
 	if(consoles.find((char*)A1) == consoles.end())
 	{
-		consoles[(char*)A1] = std::shared_ptr<TCODConsole>(new TCODConsole((int)A2, (int)A3));
+		consoles[(char*)A1] = ConsolePtr(new TCODConsole((int)A2, (int)A3));
 		return TRUE;
 	}
 	return FALSE;
@@ -31,7 +34,7 @@ PREDICATE(tcod_create_console, 3)
 
 PREDICATE(tcod_destroyConsole, 1)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1);
+	ConsoleMap::iterator it = consoles.find((char*)A1);
 	if(it != consoles.end())
 		consoles.erase(it);
 	return TRUE;
@@ -57,13 +60,13 @@ PREDICATE(tcod_blit, 10)
 PREDICATE(tcod_init_root, 4)
 {
 	TCODConsole::initRoot((int)A1, (int)A2, (char*)A3, (((char*)A4) == "true"), TCOD_RENDERER_GLSL);
-	consoles["root"] = std::shared_ptr<TCODConsole>(TCODConsole::root);
+	consoles["root"] = ConsolePtr(TCODConsole::root);
 	return TRUE;
 }
 
 PREDICATE(tcod_console_putChar, 4)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->putChar((int)A2, (int)A3, (int)A4);
@@ -72,7 +75,7 @@ PREDICATE(tcod_console_putChar, 4)
 
 PREDICATE(tcod_console_clear, 1)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->clear();
@@ -81,7 +84,7 @@ PREDICATE(tcod_console_clear, 1)
 
 PREDICATE(tcod_set_default_bg, 2)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->setDefaultBackground(termToColor(A2));
@@ -90,7 +93,7 @@ PREDICATE(tcod_set_default_bg, 2)
 
 PREDICATE(tcod_set_default_fg, 2)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->setDefaultForeground(termToColor(A2));
@@ -99,7 +102,7 @@ PREDICATE(tcod_set_default_fg, 2)
 
 PREDICATE(tcod_set_char_fg, 4)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->setCharForeground((int)A2, (int)A3, termToColor(A4));
@@ -108,7 +111,7 @@ PREDICATE(tcod_set_char_fg, 4)
 
 PREDICATE(tcod_set_char_bg, 4)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->setCharBackground((int)A2, (int)A3, termToColor(A4));
@@ -117,7 +120,7 @@ PREDICATE(tcod_set_char_bg, 4)
 
 PREDICATE(tcod_set_ascii, 4)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->setChar((int)A2, (int)A3, (int)A4);
@@ -131,7 +134,7 @@ PREDICATE(tcod_is_window_closed, 1)
 
 PREDICATE(tcod_print, 4)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->print((int)A2, (int)A3, (char*)A4);
@@ -140,7 +143,7 @@ PREDICATE(tcod_print, 4)
 
 PREDICATE(tcod_print_rect, 6)
 {
-	std::map<std::string, std::shared_ptr<TCODConsole>>::iterator it = consoles.find((char*)A1); 
+	ConsoleMap::iterator it = consoles.find((char*)A1); 
 	if(it == consoles.end()) 
 		return FALSE;
 	it->second->printRect((int)A2, (int)A3, (int)A4, (int)A5, (char*)A6);
