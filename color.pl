@@ -239,3 +239,6 @@ lerp(Color1,Color2,Coef,Color3):-
 
 set_hsv(H,S,V,Color):-
 	tcod_set_hsv(H,S,V,Color).
+
+gen_map(Count, Cols, Indices, Map) :-
+	tcod_gen_map(Count, Cols, Indices, Map).
