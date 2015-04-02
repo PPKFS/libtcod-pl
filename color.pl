@@ -7,8 +7,6 @@
 		color/2
 		]).
 
-:-use_foreign_library('lib/tcod-pl').
-
 black(0,0,0).
 darkest_grey(31,31,31).
 darker_grey(63,63,63).

@@ -5,8 +5,11 @@
 			dig_hill/5,
 			normalize/3,
 			rain_erosion/4,
-			add_noise/8
+			add_noise/8,
+			get_value/4
 		]).
+
+:- use_foreign_library('lib/tcod-pl.so').
 
 create_heightmap(Name, Width, Height) :-
 	tcod_create_heightmap(Name, Width, Height).
@@ -25,3 +28,6 @@ rain_erosion(Heightmap, Drops, Erosion, Sediment) :-
 
 add_noise(Heightmap, Mulx, Muly, Addx, Addy, Octaves, Delta, Scale) :-
 	tcod_add_noise(Heightmap, Mulx, Muly, Addx, Addy, Octaves, Delta, Scale).
+
+get_value(Heightmap, X, Y, Val) :-
+	tcod_get_value(Heightmap, X, Y, Val).

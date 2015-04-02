@@ -84,14 +84,14 @@ set_char_background(Name, X, Y, Color) :-
 	tcod_set_char_bg(Name, X, Y, Color2).
 
 set_char_background(X, Y, Color) :-
-	set_char_background(root, Color).
+	set_char_background(root, X, Y, Color).
 
 set_char_foreground(Name, X, Y, Color) :-
 	color(Color, Color2),
 	tcod_set_char_fg(Name, Color2).
 
 set_char_foreground(X, Y, Color) :-
-	set_char_foreground(root, Color).
+	set_char_foreground(root, X, Y, Color).
 
 setchar(Console, X, Y, Char):-
 	integer(Char),

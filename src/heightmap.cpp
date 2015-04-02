@@ -1,4 +1,4 @@
-#define PROLOG_MODULE "console"
+#define PROLOG_MODULE "heightmap"
 #include <SWI-cpp.h>
 #include <SWI-Prolog.h>
 #include "libtcod.hpp"
@@ -22,7 +22,7 @@ bool createHeightmap(std::string name, int width, int height)
 
 PREDICATE(tcod_create_heightmap, 3)
 {
-	createHeightmap((char*)A1, (int)A2, (int)A3) ? TRUE : FALSE;
+	return createHeightmap((char*)A1, (int)A2, (int)A3) ? TRUE : FALSE;
 }
 
 PREDICATE(tcod_add_hill, 5)
@@ -110,4 +110,12 @@ PREDICATE(tcod_add_noise, 8)
 	TCODNoise* noise = new TCODNoise(2);
 	it->second->addFbm(noise, (double)A2, (double)A3, (double)A4, (double)A5, (double)A6, (double)A7, (double)A8);
 	return TRUE;
+}
+
+PREDICATE(tcod_get_value, 4)
+{
+	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
+	if(it == heightmaps.end()) 
+		return FALSE;
+	return A4 = it->second->getValue((int)A2, (int)A3);
 }
