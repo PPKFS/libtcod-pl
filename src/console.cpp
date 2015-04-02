@@ -6,15 +6,14 @@
 #include <string>
 #include <memory>
 
-typedef std::map<std::string, ConsolePtr> ConsoleMap;
+typedef std::shared_ptr<TCODConsole> ConsolePtr;
+typedef std::map<std::string, std::shared_ptr<TCODConsole>> ConsoleMap;
 ConsoleMap consoles;
 
 TCODColor termToColor(PlTerm term)
 {
 	return TCODColor((int)term[1], (int)term[2], (int)term[3]);
 }
-
-std::map<
 
 PREDICATE(tcod_set_font, 2)
 {

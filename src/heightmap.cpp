@@ -10,14 +10,19 @@ typedef std::shared_ptr<TCODHeightMap> HeightmapPtr;
 typedef std::map<std::string, HeightmapPtr> HeightmapMap;
 HeightmapMap heightmaps;
 
+bool createHeightmap(std::string name, int width, int height)
+{
+	if(heightmaps.find(name) == heightmaps.end())
+	{
+		heightmaps[name] = HeightmapPtr(new TCODHeightMap(width, height));
+		return true;
+	}
+	return false;
+}
+
 PREDICATE(tcod_create_heightmap, 3)
 {
-	if(heightmaps.find((char*)A1) == heightmaps.end())
-	{
-		heightmaps[(char*)A1] = HeightmapPtr(new TCODConsole((int)A2, (int)A3));
-		return TRUE;
-	}
-	return FALSE;
+	createHeightmap((char*)A1, (int)A2, (int)A3) ? TRUE : FALSE;
 }
 
 PREDICATE(tcod_add_hill, 5)
@@ -25,7 +30,7 @@ PREDICATE(tcod_add_hill, 5)
 	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
 	if(it == heightmaps.end()) 
 		return FALSE;
-	it->second->addHill((float)A2, (float)A3, (float)A4, (float)A5);
+	it->second->addHill((double)A2, (double)A3, (double)A4, (double)A5);
 	return TRUE;
 }
 
@@ -34,7 +39,7 @@ PREDICATE(tcod_dig_hill, 5)
 	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
 	if(it == heightmaps.end()) 
 		return FALSE;
-	it->second->digHill((float)A2, (float)A3, (float)A4, (float)A5);
+	it->second->digHill((double)A2, (double)A3, (double)A4, (double)A5);
 	return TRUE;
 }
 
@@ -52,21 +57,22 @@ PREDICATE(tcod_normalize, 3)
 	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
 	if(it == heightmaps.end()) 
 		return FALSE;
-	it->second->normalize((float)A2, (float)A3);
+	it->second->normalize((double)A2, (double)A3);
 	return TRUE;
 }
 
-PREDICATE(tcod_add_heightmaps, 2)
+/*PREDICATE(tcod_add_heightmaps, 3)
 {
+	if(createHeightmap())
 	HeightmapMap::iterator it1 = heightmaps.find((char*)A1); 
 	HeightmapMap::iterator it2 = heightmaps.find((char*)A2); 
 	if(it1 == heightmaps.end() || it2 == heightmaps.end()) 
 		return FALSE;
-	TCODHeightMap::add(it1->second, it2->second);
+	TCODHeightMap::add(it1->second.get(), it2->second.get());
 	return TRUE;
-}
+}*/
 
-PREDICATE(tcod_multiply_heightmaps, 2)
+/*PREDICATE(tcod_multiply_heightmaps, 3)
 {
 	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
 	if(it == heightmaps.end()) 
@@ -75,16 +81,16 @@ PREDICATE(tcod_multiply_heightmaps, 2)
 	HeightmapMap::iterator it2 = heightmaps.find((char*)A2); 
 	if(it1 == heightmaps.end() || it2 == heightmaps.end()) 
 		return FALSE;
-	TCODHeightMap::multiply(it1->second, it2->second);
+	TCODHeightMap::multiply(it1->second.get(), it2->second.get());
 	return TRUE;
-}
+}*/
 
 PREDICATE(tcod_rain_erosion, 4)
 {
 	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
 	if(it == heightmaps.end()) 
 		return FALSE;
-	it->second->rainErosion((int)A2, (float)A3, (float)A4);
+	it->second->rainErosion((int)A2, (double)A3, (double)A4, NULL);
 }
 
 PREDICATE(tcod_dig_bezier, 7)
@@ -102,6 +108,6 @@ PREDICATE(tcod_add_noise, 8)
 		return FALSE;
 
 	TCODNoise* noise = new TCODNoise(2);
-	it->second->addFbm(noise, (float)A2, (float)A3, (float)A4, (float)A5, (float)A6, (float)A7, (float)A8);
+	it->second->addFbm(noise, (double)A2, (double)A3, (double)A4, (double)A5, (double)A6, (double)A7, (double)A8);
 	return TRUE;
 }
