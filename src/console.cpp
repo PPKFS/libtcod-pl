@@ -1,4 +1,4 @@
-#define PROLOG_MODULE "console"
+#define PROLOG_MODULE "tcod"
 #include <SWI-cpp.h>
 #include <SWI-Prolog.h>
 #include "libtcod.hpp"
