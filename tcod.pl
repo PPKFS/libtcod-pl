@@ -35,12 +35,23 @@
 		print_rect/6,
 		print_rect/5,
 		create_heightmap/3,
+		delete_heightmap/1,
 		add_hill/5,
 		dig_hill/5,
 		normalize/3,
 		rain_erosion/4,
 		add_noise/8,
-		get_value/4
+		scale_noise/8,
+		heightmap_get_value/4,
+		heightmap_set_value/4,
+		heightmap_add_value/2,
+		heightmap_scale_value/2,
+		heightmap_clear/1,
+		heightmap_clamp/3,
+		heightmap_copy/2,
+		heightmap_lerp/4,
+		heightmap_add/3,
+		heightmap_multiply/3
 		]).
 
 :- use_foreign_library('lib/tcod-pl.so').
@@ -354,7 +365,7 @@ set_char_background(X, Y, Color) :-
 
 set_char_foreground(Name, X, Y, Color) :-
 	color(Color, Color2),
-	tcod_set_char_fg(Name, Color2).
+	tcod_set_char_fg(Name, X, Y, Color2).
 
 set_char_foreground(X, Y, Color) :-
 	set_char_foreground(root, X, Y, Color).
@@ -392,6 +403,9 @@ print_rect(X, Y,W, H, Str):-
 create_heightmap(Name, Width, Height) :-
 	tcod_create_heightmap(Name, Width, Height).
 
+delete_heightmap(Name) :-
+	tcod_delete_heightmap(Name).
+
 add_hill(Heightmap, X, Y, Radius, Height) :-
 	tcod_add_hill(Heightmap, X, Y, Radius, Height).
 
@@ -407,5 +421,35 @@ rain_erosion(Heightmap, Drops, Erosion, Sediment) :-
 add_noise(Heightmap, Mulx, Muly, Addx, Addy, Octaves, Delta, Scale) :-
 	tcod_add_noise(Heightmap, Mulx, Muly, Addx, Addy, Octaves, Delta, Scale).
 
-get_value(Heightmap, X, Y, Val) :-
-	tcod_get_value(Heightmap, X, Y, Val).
+scale_noise(Heightmap, Mulx, Muly, Addx, Addy, Octaves, Delta, Scale) :-
+	tcod_scale_noise(Heightmap, Mulx, Muly, Addx, Addy, Octaves, Delta, Scale).
+
+heightmap_get_value(Heightmap, X, Y, Val) :-
+	tcod_heightmap_get_value(Heightmap, X, Y, Val).
+
+heightmap_set_value(Heightmap, X, Y, Val) :-
+	tcod_heightmap_set_value(Heightmap, X, Y, Val).
+
+heightmap_add_value(Heightmap, Val) :-
+	tcod_heightmap_add_value(Heightmap, Val).
+
+heightmap_scale_value(Heightmap, Val) :-
+	tcod_heightmap_scale_value(Heightmap, Val).
+
+heightmap_clear(Heightmap) :-
+	tcod_heightmap_clear(Heightmap).
+
+heightmap_clamp(Heightmap, Min, Max) :-
+	tcod_heightmap_clamp(Heightmap, Min, Max).
+
+heightmap_copy(Source, Dest) :-
+	tcod_heightmap_copy(Source, Dest).
+
+heightmap_lerp(H1, H2, Val, H3) :-
+	tcod_heightmap_lerp(H1, H2, Val, H3).
+
+heightmap_add(H1, H2, Out) :-
+	tcod_heightmap_add(H1, H2, Out).
+
+heightmap_multiply(H1, H2, Out) :-
+	tcod_heightmap_multiply(H1, H2, Out).

@@ -61,29 +61,27 @@ PREDICATE(tcod_normalize, 3)
 	return TRUE;
 }
 
-/*PREDICATE(tcod_add_heightmaps, 3)
+PREDICATE(tcod_heightmap_add, 3)
 {
-	if(createHeightmap())
 	HeightmapMap::iterator it1 = heightmaps.find((char*)A1); 
-	HeightmapMap::iterator it2 = heightmaps.find((char*)A2); 
-	if(it1 == heightmaps.end() || it2 == heightmaps.end()) 
+	HeightmapMap::iterator it2 = heightmaps.find((char*)A2);
+	HeightmapMap::iterator it3 = heightmaps.find((char*)A3);
+	if(it1 == heightmaps.end() || it2 == heightmaps.end() || it3 == heightmaps.end()) 
 		return FALSE;
-	TCODHeightMap::add(it1->second.get(), it2->second.get());
+	it3->second->add(it1->second.get(), it2->second.get());
 	return TRUE;
-}*/
+}
 
-/*PREDICATE(tcod_multiply_heightmaps, 3)
+PREDICATE(tcod_heightmap_multiply, 3)
 {
-	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
-	if(it == heightmaps.end()) 
-		return FALSE;
 	HeightmapMap::iterator it1 = heightmaps.find((char*)A1); 
-	HeightmapMap::iterator it2 = heightmaps.find((char*)A2); 
-	if(it1 == heightmaps.end() || it2 == heightmaps.end()) 
+	HeightmapMap::iterator it2 = heightmaps.find((char*)A2);
+	HeightmapMap::iterator it3 = heightmaps.find((char*)A3);
+	if(it1 == heightmaps.end() || it2 == heightmaps.end() || it3 == heightmaps.end()) 
 		return FALSE;
-	TCODHeightMap::multiply(it1->second.get(), it2->second.get());
+	it3->second->multiply(it1->second.get(), it2->second.get());
 	return TRUE;
-}*/
+}
 
 PREDICATE(tcod_rain_erosion, 4)
 {
@@ -112,10 +110,57 @@ PREDICATE(tcod_add_noise, 8)
 	return TRUE;
 }
 
-PREDICATE(tcod_get_value, 4)
+PREDICATE(tcod_scale_noise, 8)
+{
+	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
+	if(it == heightmaps.end()) 
+		return FALSE;
+
+	TCODNoise* noise = new TCODNoise(2);
+	it->second->scaleFbm(noise, (double)A2, (double)A3, (double)A4, (double)A5, (double)A6, (double)A7, (double)A8);
+	return TRUE;
+}
+
+PREDICATE(tcod_heightmap_get_value, 4)
 {
 	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
 	if(it == heightmaps.end()) 
 		return FALSE;
 	return A4 = it->second->getValue((int)A2, (int)A3);
+}
+
+PREDICATE(tcod_heightmap_set_value, 4)
+{
+	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
+	if(it == heightmaps.end()) 
+		return FALSE;
+	it->second->setValue((int)A2, (int)A3, (double)A4);
+	return TRUE;
+}
+
+PREDICATE(tcod_heightmap_add_value, 2)
+{
+	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
+	if(it == heightmaps.end()) 
+		return FALSE;
+	it->second->add((double)A2);
+	return TRUE;
+}
+
+PREDICATE(tcod_heightmap_scale_value, 2)
+{
+	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
+	if(it == heightmaps.end()) 
+		return FALSE;
+	it->second->scale((double)A2);
+	return TRUE;
+}
+
+PREDICATE(tcod_heightmap_clear, 1)
+{
+	HeightmapMap::iterator it = heightmaps.find((char*)A1); 
+	if(it == heightmaps.end()) 
+		return FALSE;
+	it->second->clear();
+	return TRUE;
 }
